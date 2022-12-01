@@ -30,15 +30,19 @@ async def get_weather_type(message: Message, state: FSMContext):
 
 async def get_by_city(message: Message, state: FSMContext):
     custom_log(message.from_user.id, message.from_user.first_name, message.from_user.last_name, message.text)
-    await state.update_data(city=message.text.capitalize())
+    await state.update_data(city=message.text.capitalize().strip())
     context_data = init(await state.get_data())
-    if not context_data:
-        await message.answer('Неправильный город, попробуйте снова')
+    if message.text == '/start':
+        await message.answer(views.welcome_message(message.from_user.first_name))
+        await message.answer(views.welcome_message2(message.from_user.first_name))
+        await message.answer(views.end_weather())
+        await state.clear()
+    elif not context_data:
+        await message.answer('Неправильный город, попробуйте снова.')
         await state.set_state(StepsForm.BY_CITY)
     else:
         await message.answer(context_data)
-        await message.answer(views.end_weather())
-        await state.clear()
+        await state.set_state(StepsForm.BY_CITY)
 
 
 async def get_by_geo(message: Message, state: FSMContext):

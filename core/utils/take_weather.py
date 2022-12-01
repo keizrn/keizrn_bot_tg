@@ -49,8 +49,7 @@ def init(user_data):
 def generate_result(data, city):
     temp = data['list'][0]['main']['temp']
     feels_like = data['list'][0]['main']['feels_like']
-    pressure = data['list'][0]['main']['pressure']
-    pressure2 = pressure / 1.33322
+    pressure = (data['list'][0]['main']['pressure']) * 0.75
     humidity = data['list'][0]['main']['humidity']
     wind_speed = data['list'][0]['wind']['speed']
     # rain = 'не ожидается' if data['list'][0]['rain'] is None else 'ожидается'
@@ -66,7 +65,7 @@ def generate_result(data, city):
 Температура {round(temp, 1)} °C
 Ощущается как {round(feels_like, 1)} °C
 Статус: {weather} {ICONS[icon]} 
-Давление {round(pressure, 1)} гПа, {round(pressure2, 1)} мм рт ст 
+Давление {round(pressure, 1)} мм рт ст 
 Влажность {humidity} %
 💨 Скорость ветра {wind_speed} м/с 💨
 '''

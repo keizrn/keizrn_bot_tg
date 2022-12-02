@@ -17,7 +17,7 @@ async def get_help(message: Message, bot: Bot):
 
 async def get_any(message: Message, bot: Bot):
     custom_log(message.from_user.id, message.from_user.first_name, message.from_user.last_name, message.text)
-    await message.answer(views.wrong_value_message())
+    await message.answer(views.text_err(0))
 
 
 async def get_about(message: Message, bot: Bot):

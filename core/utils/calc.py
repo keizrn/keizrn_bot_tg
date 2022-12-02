@@ -1,5 +1,6 @@
 from sympy import sympify
 from decimal import Decimal
+import core.views as v
 
 a = 0
 b = 0
@@ -15,16 +16,16 @@ def calc_init(user_dict):
             case 'decimal':
                 a = Decimal(user_dict["first_num"])
                 b = Decimal(user_dict["second_num"])
-                return calc()
+                return calc(), True
             case 'complex':
                 a = complex(user_dict["first_num"].lower().replace('i', 'j'))
                 b = complex(user_dict["second_num"].lower().replace('i', 'j'))
-                return calc()
+                return calc(), True
             case 'free':
                 expr = user_dict["expression"]
-                return free_calc()
+                return free_calc(), True
     except:
-        return False
+        return 0, False
 
 
 def calc():
@@ -33,7 +34,7 @@ def calc():
             return a * b
         case '/':
             if b == 0:
-                return 'Ошибка! Делить на 0 нельзя.'
+                return v.text_err(7)  # ошибка: деление на 0
             else:
                 return a / b
         case '+':

@@ -25,7 +25,7 @@ async def get_weather_type(message: Message, state: FSMContext):
         await message.answer(views.chosen_geo(), reply_markup=take_geo())
         await state.set_state(StepsForm.BY_GEO)
     else:
-        await message.answer(views.wrong_weather_type())
+        await message.answer(views.text_err(4))  # ошибка неправильный тип погоды
 
 
 async def get_by_city(message: Message, state: FSMContext):
@@ -33,15 +33,16 @@ async def get_by_city(message: Message, state: FSMContext):
     await state.update_data(city=message.text.capitalize().strip())
     context_data = init(await state.get_data())
     if message.text == '/start':
-        await message.answer(views.welcome_message(message.from_user.first_name))
-        await message.answer(views.welcome_message2(message.from_user.first_name))
         await message.answer(views.end_weather())
         await state.clear()
+        await message.answer(views.welcome_message(message.from_user.first_name))
+        await message.answer(views.welcome_message2(message.from_user.first_name))
     elif not context_data:
-        await message.answer('Неправильный город, попробуйте снова.')
+        await message.answer(views.text_err(5))  # ошибка неправильный город
         await state.set_state(StepsForm.BY_CITY)
     else:
         await message.answer(context_data)
+        await message.answer(views.continue_weather())
         await state.set_state(StepsForm.BY_CITY)
 
 
